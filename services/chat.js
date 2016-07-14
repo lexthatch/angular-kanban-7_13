@@ -4,16 +4,18 @@
 
 	app.factory('chatService', ['$rootScope', function ($rootScope) {
 
-		var conversations [];
+		var conversations = [];
 
-		firebase.database().ref('chat/conversations').on('value', function (snapshot) {
+		firebase.database().ref('chat/conversations/').on('value', function (snapshot) {
 
-
+if(snapshot.hasChildren()) {
+	conversations = [];
+}
 
 			snapshot.forEach(function (childSnapshot) {
 				conversations.push(childSnapshot.val());
 			});
-
+console.log('Conversations', conversations)
 			$rootScope.$broadcast('userlist-updated', users);
 		});
 
@@ -22,9 +24,9 @@
 			return conversations;
 
 		}
-	}
+		
 
-		return{
+		return {
 		getConversations: getConversations
 	};
 }]);
